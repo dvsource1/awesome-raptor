@@ -19,5 +19,4 @@ def send_FCM(app, notification_profile: NotificationProfile) -> str:
   message_data = notification_profile.notification.data.to_str_dict()
   message = create_cloud_message(fcm_token, notification, message_data)
   
-  # return '-1'
   return messaging.send(message)

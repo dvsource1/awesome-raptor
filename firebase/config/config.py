@@ -1,25 +1,23 @@
-class Config:
+from firebase.database.document import FirebaseDocument
+
+
+class Config(FirebaseDocument):
   def __init__(self, key: str, description: str, value: str, initial_value: str) -> None:
-    self.key = key
+    super().__init__(key)
     self.description = description
     self.value = value
     self.initial_value = initial_value
     
   @staticmethod
-  def from_dict(config_dict):
+  def from_dict(config_dict, allowReference=False):
       return Config(
-          config_dict['key'],
-          config_dict['description'],
-          config_dict['value'],
-          config_dict['initial_value'],
+          config_dict.get('key'),
+          config_dict.get('description'),
+          config_dict.get('value'),
+          config_dict.get('initial_value'),
       )
-
-  @staticmethod
-  def from_doc_ref(doc_ref):
-    doc = doc_ref.get()
-    return Config.from_dict(doc.to_dict())
     
-  def to_dict(self):
+  def to_dict(self, allowReference=False):
       return {
           'key': self.key,
           'description': self.description,

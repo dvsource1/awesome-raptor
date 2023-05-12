@@ -1,20 +1,23 @@
-class NotificationAction:
+from firebase.database.document import FirebaseDocument
+
+
+class NotificationAction(FirebaseDocument):
     def __init__(self, key: str, description: str, datatype: str, cron: str) -> None:
-        self.key = key
+        super().__init__(key)
         self.description = description
         self.datatype = datatype
         self.cron = cron
     
     @staticmethod
-    def from_dict(action_dict):
+    def from_dict(action_dict, allowReference=False):
         return NotificationAction(
-            action_dict['key'],
-            action_dict['description'],
-            action_dict['datatype'],
-            action_dict['cron']
+            action_dict.get('key'),
+            action_dict.get('description'),
+            action_dict.get('datatype'),
+            action_dict.get('cron')
         )
     
-    def to_dict(self):
+    def to_dict(self, allowReference=False):
         return {
             'key': self.key,
             'description': self.description,

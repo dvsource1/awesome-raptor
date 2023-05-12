@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 from firebase.actions.database_actions import read_documents
 from firebase.actions.initialize_firebase import initialize_firebase
 from firebase.actions.message_actions import send_FCM
+from firebase.database.initialize_database import initialize_database
 
 from firebase.notification.notification_profile import NotificationProfile
 
@@ -13,11 +14,12 @@ def main():
   print("Running main program...")
 
   app = initialize_firebase()
+  # res = initialize_database(app)
   
-  notofication_profile_refs = read_documents(app, u'NOTIFICATIONS')
+  notification_profiles = read_documents(app, u'NOTIFICATIONS')
   
-  for notofication_profile_ref in notofication_profile_refs:
-    notification = NotificationProfile.from_doc_ref(notofication_profile_ref)
+  for notofication_profile in notification_profiles:
+    notification = NotificationProfile.from_dict(notofication_profile.to_dict())
     response = send_FCM(app, notification)
     print('Successfully sent message:', response)
 

@@ -10,22 +10,22 @@ class Notification:
         self.data = data
     
     @staticmethod
-    def from_dict(config_dict):
+    def from_dict(config_dict, allowReference=False):
         return Notification(
-            config_dict['title'],
-            config_dict['subtitle'],
-            config_dict['body'],
-            config_dict['smallIcon'],
-            NotificationData.from_dict(config_dict['data'].get().to_dict())
+            config_dict.get('title'),
+            config_dict.get('subtitle'),
+            config_dict.get('body'),
+            config_dict.get('smallIcon'),
+            config_dict.get('data') if allowReference else NotificationData.from_dict(config_dict.get('data').get().to_dict(), allowReference) if 'data' in config_dict else None
         )
     
-    def to_dict(self):
+    def to_dict(self, allowReference=False):
         return {
             'title': self.title,
             'subtitle': self.subtitle,
             'body': self.body,
             'smallIcon': self.smallIcon,
-            'data': self.data
+            'data': self.data if allowReference else self.data.to_dict(allowReference) if self.data is not None else None
         }
     
     def __str__(self):

@@ -1,24 +1,27 @@
 import datetime
 
-class NotificationData:
+from firebase.database.document import FirebaseDocument
+
+
+class NotificationData(FirebaseDocument):
     def __init__(self, key: str, description: str, value: str, initial_value: str, last_updated: datetime.datetime) -> None:
-        self.key = key
+        super().__init__(key)
         self.description = description
         self.value = value
         self.initial_value = initial_value
         self.last_updated = last_updated
     
     @staticmethod
-    def from_dict(data_dict):
+    def from_dict(data_dict, allowReference=False):
         return NotificationData(
-            data_dict['key'],
-            data_dict['description'],
-            data_dict['value'],
-            data_dict['initial_value'],
-            data_dict['last_updated']
+            data_dict.get('key'),
+            data_dict.get('description'),
+            data_dict.get('value'),
+            data_dict.get('initial_value'),
+            data_dict.get('last_updated')
         )
     
-    def to_dict(self):
+    def to_dict(self, allowReference=False):
         return {
             'key': self.key,
             'description': self.description,

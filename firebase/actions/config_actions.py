@@ -3,5 +3,5 @@ from firebase.config.config import Config
 
 
 def read_config(app, key: str) -> str:
-  config_ref = read_document(app, u'CONFIGS', key)
-  return Config.from_doc_ref(config_ref).value;
+  config = read_document(app, u'CONFIGS', key)
+  return Config.from_dict(config.to_dict())
